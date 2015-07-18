@@ -72,4 +72,3 @@ Motion::Project::App.setup do |app|
 end
 
 # Remove this if you aren't using CDQ
-task :"build:simulator" => :"schema:build"
