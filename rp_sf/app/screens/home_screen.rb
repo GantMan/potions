@@ -1,36 +1,35 @@
 class HomeScreen < PM::Screen
-  title "Your title here"
   stylesheet HomeScreenStylesheet
+  WEATHER_URL = "http://openweathermap.org/data/2.1/find/name"
 
   def on_load
-    set_nav_bar_button :left, system_item: :camera, action: :nav_left_button
-    set_nav_bar_button :right, title: "Right", action: :nav_right_button
+    # Append views with styles
+    append(UILabel, :location)
+    append(UILabel, :time)
+    append(UILabel, :mi)
+    append(UIImageView, :line_separator)
+    append(UIImageView, :weather_icon)
+    append(UILabel, :temperature)
+    append(UILabel, :min_max_temp)
+    append(UILabel, :description)
 
-    @hello_world = append!(UILabel, :hello_world)
+    load_info
   end
 
-  def nav_left_button
-    mp 'Left button'
+  def load_info
+    # Set time
+    find(:time).data = Time.now.strftime("%l:%M")
+    find(:mi).data = Time.now.strftime("%p")
+    # Set temp
+    # app.net.get_json(url, q: "san francisco") do |response|
+    #   if response.success?
+    #     temp_kelvin = response.object["list"].first["main"]["temp"]
+
+    #   end
+    # end
   end
 
-  def nav_right_button
-    mp 'Right button'
-  end
-
-  # You don't have to reapply styles to all UIViews, if you want to optimize, another way to do it
-  # is tag the views you need to restyle in your stylesheet, then only reapply the tagged views, like so:
-  #   def logo(st)
-  #     st.frame = {t: 10, w: 200, h: 96}
-  #     st.centered = :horizontal
-  #     st.image = image.resource('logo')
-  #     st.tag(:reapply_style)
-  #   end
-  #
-  # Then in will_animate_rotate
-  #   find(:reapply_style).reapply_styles#
-
-  # Remove the following if you're only using portrait
-  def will_animate_rotate(orientation, duration)
-    find.all.reapply_styles
+  def k_to_f(kelvin)
+    (((temp_kelvin - 273.15) * 1.8000) + 32).to_i
   end
 end
